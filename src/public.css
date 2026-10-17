@@ -1,0 +1,57 @@
+
+*{box-sizing:border-box}
+.pubShell{min-height:100vh;background:#f8f7fc;color:#29243b;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.5}
+.pubShell button,.pubShell input,.pubShell textarea{font:inherit}
+.pubShell button{cursor:pointer}
+.pubShell a{color:#7652d2}
+.pubHeader{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:23px 28px;gap:12px}
+.pubLogo{font-weight:900;letter-spacing:1px;color:#3e2b71}
+.pubLogo span{display:inline-block;vertical-align:middle;margin-left:6px;background:#ece8ff;border-radius:100px;padding:3px 9px;color:#6b43c5;font-size:10px;letter-spacing:1px}
+.pubPersonal{font-size:13px;font-weight:700;white-space:nowrap}
+.pubMain{max-width:1100px;margin:0 auto;padding:15px 24px 70px}
+.pubHero{text-align:center;padding:30px 4px 35px}
+.pubEyebrow,.pubStep{font-size:11px;font-weight:900;letter-spacing:2px;color:#8463bf}
+.pubHero h1{font-size:clamp(34px,6vw,56px);letter-spacing:-2px;line-height:1.12;margin:16px 0;color:#302348}
+.pubHero h1 em{color:#815de0}
+.pubHero p{max-width:530px;margin:0 auto;color:#696579;font-size:16px}
+.pubAllowance{display:inline-flex;gap:7px;align-items:center;background:white;border:1px solid #e7e0f5;box-shadow:0 4px 22px #37215e0a;border-radius:100px;padding:11px 20px;margin-top:22px;color:#635d75;font-size:14px}
+.pubAllowance strong{color:#643dcb}
+.pubGrid{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:stretch}
+.pubCard{background:white;border:1px solid #ebe7f4;border-radius:20px;padding:27px;box-shadow:0 12px 45px #43267a0a}
+.pubCard h2{font-size:23px;letter-spacing:-.4px;margin:11px 0 18px;color:#372e54}
+.pubMic{text-align:center;font-size:54px;margin:27px 0 11px}
+.pubTime{text-align:center;font-size:36px;letter-spacing:2px;font-weight:800;font-variant-numeric:tabular-nums;color:#362750;margin:13px}
+.pubTime span{font-size:15px;color:#8c829e}
+.pubBar{height:8px;background:#efedf6;border-radius:8px;margin:17px 0 25px;overflow:hidden}
+.pubBar>div{height:100%;background:#8562dd;border-radius:8px;transition:width .5s}
+.pubMainButton{background:#7354d2;color:white;border:0;border-radius:12px;padding:13px 19px;font-weight:800;min-height:48px}
+.pubMainButton:hover:not(:disabled){background:#5e3bbb}
+.pubMainButton:disabled{opacity:.5;cursor:not-allowed}
+.pubCard>.pubMainButton{width:100%}
+.pubStop{background:#ba435b}
+.pubHint{font-size:13px;color:#777083;line-height:1.65}
+.pubCard>.pubHint{text-align:center}
+.pubUpload{display:block;cursor:pointer;margin:20px 0 0;text-align:center;border:1px dashed #ac99db;padding:12px;border-radius:12px;color:#6643b6;font-weight:700;font-size:13px}
+.pubUpload input{display:none}
+.pubField{font-size:13px;font-weight:800;color:#675f7c;display:block;margin:12px 0}
+.pubField input{width:100%;display:block;border:1px solid #e3ddec;border-radius:10px;padding:11px;margin:8px 0 0;min-height:45px;color:#322a42;background:#fff;font-size:16px}
+.pubCard textarea{width:100%;min-height:252px;border:1px solid #e3ddec;border-radius:12px;padding:15px;resize:vertical;outline-color:#795bdf;background:#fff;color:#322a42;font-size:16px}
+.pubSpace{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:13px}
+.pubSpace small{color:#898097}
+.pubStatus,.pubAlert{margin:20px 0;padding:17px 20px;border-radius:13px;overflow-wrap:anywhere;background:#efebff;color:#49317d}
+.pubAlert{background:#fff3e0;color:#6e451a;border:1px solid #ffe3af}
+.pubSession{margin:10px 0 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:13px;color:#6c6085}
+.pubSession button,.pubBottom button{border:1px solid #d8cff0;background:white;border-radius:10px;padding:10px 14px;color:#6845bc;font-weight:700}
+.pubOutput{margin-top:18px}
+.pubOutputHead{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.pubExports{display:flex;gap:8px}
+.pubExports button{background:#f5f1ff;border:1px solid #d9cff4;color:#603fbd;padding:11px 14px;border-radius:10px;font-weight:700}
+.pubCheck{display:flex;gap:9px;align-items:center;font-size:13px;color:#605875}
+.pubOutput article{border-top:1px solid #eeeaf5;padding:14px 0}
+.pubOutput article h3{font-size:15px;margin:6px 0;color:#4e3a83}
+.pubOutput article p{color:#554d64;font-size:14px;margin:7px 0}
+.pubBottom{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap}
+.pubSaved{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid #ece6fa}
+.pubSaved button{border:0;background:none;color:#6748b9;font-size:13px}
+.pubFooter{text-align:center;margin-top:35px;font-size:13px;color:#827b8c;line-height:1.8}
+@media(max-width:760px){.pubGrid{grid-template-columns:1fr}.pubMain{padding:10px 15px 45px}.pubHeader{padding:18px 15px}.pubLogo{font-size:13px}.pubPersonal{font-size:11px}.pubHero{padding:14px 0 28px}.pubHero h1{letter-spacing:-1.6px}.pubCard{padding:20px}.pubOutputHead{align-items:flex-start;flex-direction:column}.pubSession{flex-direction:column;align-items:flex-start}.pubAllowance{font-size:12px;padding:9px 15px}}
