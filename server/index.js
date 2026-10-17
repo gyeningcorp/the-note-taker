@@ -48,7 +48,7 @@ function providerInputs(req){
  if(supplied&&supplied.length>4096)return{error:'Invalid key length.',code:400};
  const key=supplied||providers[provider].key();
  if(!key)return{error:'No '+provider+' API key configured. Add a personal key in Settings.',code:422};
- return{provider,model,key};
+ return{provider,model,key,keySource:supplied?'personal':'server'};
 }
 const hits=new Map();
 app.use('/api',(req,res,next)=>{
@@ -60,10 +60,10 @@ app.use('/api',(req,res,next)=>{
  next();
 });
 function reportFailure(res,error,provider){
- console.error('AI operation failed',provider,String(error.message).replace(/sk-[\w-]+/g,'[redacted]'));
+ console.error('AI operation failed',provider.provider,provider.keySource,String(error.message).replace(/sk-[\w-]+/g,'[redacted]'));
  const text=error.message||'';
- const hint=/401|403|API key|authentication|permission|invalid.*key|Incorrect API key/i.test(text)?'Authentication rejected. Verify provider and API key.':/429|quota|rate limit|billing|insufficient/i.test(text)?'Provider quota or billing limit reached.':'Provider call failed. Check model and try again.';
- res.status(502).json({error:hint});
+ const hint=/credit balance is too low|insufficient credits|credit balance/i.test(text)?'Anthropic API credit balance is too low. Add API credits in the Anthropic Console under Plans & Billing.':/401|403|API key|authentication|permission|invalid.*key|Incorrect API key/i.test(text)?'Authentication rejected. Verify provider and API key.':/429|quota|rate limit|billing|insufficient/i.test(text)?'Provider quota or billing limit reached.':'Provider call failed. Check model and try again.';
+ res.status(502).json({error:hint,keySource:provider.keySource||null});
 }
 app.post('/api/outline',async(req,res)=>{
  const{title='',transcript,style='concise'}=req.body||{};
@@ -74,7 +74,7 @@ app.post('/api/outline',async(req,res)=>{
   const notes=JSON.parse(stripFences(await invokeProvider({...inputs,prompt})));
   if(typeof notes.summary!=='string'||!Array.isArray(notes.topics))throw Error('Invalid JSON outline');
   res.json({...notes,_meta:{provider:inputs.provider,model:inputs.model,mode:'ai'}});
- }catch(error){reportFailure(res,error,inputs.provider)}
+ }catch(error){reportFailure(res,error,inputs)}
 });
 app.post('/api/test-provider',async(req,res)=>{
  const inputs=providerInputs(req);if(inputs.error)return res.status(inputs.code).json({error:inputs.error});
@@ -82,7 +82,7 @@ app.post('/api/test-provider',async(req,res)=>{
   const prompt='Return JSON where title is "Connection OK", summary is "Connected", and highlights, topics, decisions, actions, questions are empty arrays.';
   const notes=JSON.parse(stripFences(await invokeProvider({...inputs,prompt,maxTokens:180})));
   if(notes.summary!=='Connected')throw Error('Provider returned unexpected data.');
-  res.json({ok:true,provider:inputs.provider,model:inputs.model});
+  res.json({ok:true,provider:inputs.provider,model:inputs.model,keySource:inputs.keySource});
  }catch(error){reportFailure(res,error,inputs.provider)}
 });
 const upload=multer({storage:multer.memoryStorage(),limits:{fileSize:24*1024*1024}});
