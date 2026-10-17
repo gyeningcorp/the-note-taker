@@ -7,8 +7,9 @@ import { Blob } from 'node:buffer';
 import freeRouter from './free.js';
 
 const app=express();
+app.set('trust proxy',1);
 const configuredOrigins=(process.env.CORS_ORIGIN||'').split(',').map(v=>v.trim()).filter(Boolean);
-const origins=new Set([...configuredOrigins,'https://the-note-taker.vercel.app','https://the-note-taker-gyeningcorp-4789s-projects.vercel.app']);
+const origins=new Set([...configuredOrigins,'https://the-note-taker.vercel.app','https://the-note-taker-gyeningcorp-4789s-projects.vercel.app','https://the-note-taker-free.vercel.app']);
 app.use(cors({origin:(origin,cb)=>cb(null,!origin||origins.has(origin)),methods:['GET','POST','OPTIONS'],allowedHeaders:['Content-Type','X-LLM-API-Key','X-Transcription-API-Key','X-Device-ID','X-Free-Session-ID']}));
 app.use(express.json({limit:'1mb'}));
 app.disable('x-powered-by');
