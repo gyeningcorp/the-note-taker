@@ -11,3 +11,13 @@
 .settingsPanel .left{text-align:left}.settingsPanel .message{overflow-wrap:anywhere;margin:12px 0}
 .sourceTag{font-size:12px;color:#6556a7;margin:4px 0}
 @media(max-width:560px){.settingsPanel{padding:20px}.settingsPanel .keyRow{flex-wrap:wrap}.settingsPanel .keyRow input{flex-basis:100%}.settingsPanel .keyRow button{margin-top:0}}
+
+
+.claudeProPanel{background:linear-gradient(145deg,#faf7ff,#f3edff);border:1px solid #e4d5fa;border-radius:16px;padding:20px;margin:22px 0 26px}
+.claudeProPanel h3{border-top:none;padding-top:0;margin:0 0 11px;color:#4a338e}
+.claudeProPanel .claudeSteps{font-size:14px;line-height:1.9;color:#4a425f;margin:10px 0 18px}
+.claudeButtons{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.claudeLink{display:inline-flex;align-items:center;justify-content:center;padding:11px 16px;border-radius:10px;border:1px solid #bca6ee;text-decoration:none;color:#6541b6;font-weight:700;background:#fff}
+.claudeImport{display:block;width:100%;min-height:142px;border:1px solid #cfc1e5;border-radius:10px;background:#fff;color:#322744;font-size:14px;padding:12px;margin-top:10px;resize:vertical}
+.claudeProPanel label{font-size:14px;display:block;margin-top:18px}
+@media(max-width:560px){.claudeProPanel{padding:15px}.claudeButtons>*{width:100%;text-align:center}}
