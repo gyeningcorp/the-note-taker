@@ -1,5 +1,5 @@
 import {DatabaseSync} from 'node:sqlite';
-import {createHash} from 'node:crypto';
+import {createHash,randomUUID} from 'node:crypto';
 import {mkdirSync} from 'node:fs';
 import {dirname} from 'node:path';
 
@@ -32,7 +32,7 @@ export function reserve(req){
   const used=count(i.device,i.day);
   const sameIp=db.prepare('SELECT COUNT(*) n FROM note_uses WHERE ip=? AND day=?').get(i.ip,i.day).n;
   if(used>=2||sameIp>=10){db.exec('ROLLBACK');return{error:used>=2?'Daily free limit reached (2 notes). Use your own AI API key or choose a paid plan.':'Shared network daily allowance reached. Try again tomorrow or use your own key.',code:429,remaining:Math.max(0,2-used)}}
-  const id=crypto.randomUUID();
+  const id=randomUUID();
   db.prepare('INSERT INTO note_uses (id,day,device,ip,state,created) VALUES (?,?,?,?,?,?)').run(id,i.day,i.device,i.ip,'reserved',Date.now());
   db.exec('COMMIT');
   return{id,remaining:1-used};
