@@ -4,11 +4,12 @@ import cors from 'cors';
 import multer from 'multer';
 import Anthropic from '@anthropic-ai/sdk';
 import { Blob } from 'node:buffer';
+import freeRouter from './free.js';
 
 const app=express();
 const configuredOrigins=(process.env.CORS_ORIGIN||'').split(',').map(v=>v.trim()).filter(Boolean);
 const origins=new Set([...configuredOrigins,'https://the-note-taker.vercel.app','https://the-note-taker-gyeningcorp-4789s-projects.vercel.app']);
-app.use(cors({origin:(origin,cb)=>cb(null,!origin||origins.has(origin)),methods:['GET','POST','OPTIONS'],allowedHeaders:['Content-Type','X-LLM-API-Key','X-Transcription-API-Key']}));
+app.use(cors({origin:(origin,cb)=>cb(null,!origin||origins.has(origin)),methods:['GET','POST','OPTIONS'],allowedHeaders:['Content-Type','X-LLM-API-Key','X-Transcription-API-Key','X-Device-ID','X-Free-Session-ID']}));
 app.use(express.json({limit:'1mb'}));
 app.disable('x-powered-by');
 app.use((_,res,next)=>{res.set('Cache-Control','no-store');next()});
@@ -46,9 +47,9 @@ function providerInputs(req){
  if(!/^[a-z0-9][a-z0-9_.:-]{1,95}$/i.test(model))return{error:'Invalid model name.',code:400};
  const supplied=req.get('X-LLM-API-Key')?.trim();
  if(supplied&&supplied.length>4096)return{error:'Invalid key length.',code:400};
- const key=supplied||providers[provider].key();
- if(!key)return{error:'No '+provider+' API key configured. Add a personal key in Settings.',code:422};
- return{provider,model,key,keySource:supplied?'personal':'server'};
+ const key=supplied;
+ if(!key)return{error:'Personal notes require your own API key. Open Settings to add one. Public free notes use the separate Free mode.',code:422};
+ return{provider,model,key,keySource:'personal'};
 }
 const hits=new Map();
 app.use('/api',(req,res,next)=>{
@@ -85,13 +86,14 @@ app.post('/api/test-provider',async(req,res)=>{
   res.json({ok:true,provider:inputs.provider,model:inputs.model,keySource:inputs.keySource});
  }catch(error){reportFailure(res,error,inputs)}
 });
+app.use('/api/free',freeRouter);
 const upload=multer({storage:multer.memoryStorage(),limits:{fileSize:24*1024*1024}});
 app.post('/api/transcribe',upload.single('audio'),async(req,res)=>{
  if(!req.file)return res.status(400).json({error:'Audio file required'});
  const personal=req.get('X-Transcription-API-Key')?.trim();
  if(personal&&personal.length>4096)return res.status(400).json({error:'Invalid key length.'});
- const key=personal||process.env.OPENAI_API_KEY;
- if(!key)return res.status(422).json({error:'Audio transcription requires an OpenAI API key. Set it in Settings → Transcription.'});
+ const key=personal;
+ if(!key)return res.status(422).json({error:'Personal transcription requires your own OpenAI API key under Settings → Transcription. Free public notes use a separate path.'});
  if(!/^(audio\/|video\/mp4|application\/octet-stream)/.test(req.file.mimetype))return res.status(400).json({error:'Unsupported audio format'});
  try{
   const form=new FormData();form.append('file',new Blob([req.file.buffer],{type:req.file.mimetype}),req.file.originalname.replace(/[^\w.-]/g,'_'));form.append('model','whisper-1');
