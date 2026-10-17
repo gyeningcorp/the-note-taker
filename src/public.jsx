@@ -2,7 +2,7 @@ import React,{useEffect,useRef,useState} from 'react';
 import {Document,Packer,Paragraph,HeadingLevel} from 'docx';
 import {jsPDF} from 'jspdf';
 import './public.css';
-const API=(import.meta.env.VITE_API_BASE_URL||'').replace(/\/$/,'');
+const API='';
 const BASE='https://the-note-taker.vercel.app';
 const newDevice=()=>{try{return crypto.randomUUID()}catch{return '00000000-0000-4000-8000-'+Math.random().toString(16).slice(2,14).padEnd(12,'0')}};
 function getDevice(){let id=localStorage.getItem('nt-public-device');if(!/^[0-9a-f-]{36}$/i.test(id||'')){id=newDevice();localStorage.setItem('nt-public-device',id)}return id}
