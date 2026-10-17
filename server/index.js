@@ -83,7 +83,7 @@ app.post('/api/test-provider',async(req,res)=>{
   const notes=JSON.parse(stripFences(await invokeProvider({...inputs,prompt,maxTokens:180})));
   if(notes.summary!=='Connected')throw Error('Provider returned unexpected data.');
   res.json({ok:true,provider:inputs.provider,model:inputs.model,keySource:inputs.keySource});
- }catch(error){reportFailure(res,error,inputs.provider)}
+ }catch(error){reportFailure(res,error,inputs)}
 });
 const upload=multer({storage:multer.memoryStorage(),limits:{fileSize:24*1024*1024}});
 app.post('/api/transcribe',upload.single('audio'),async(req,res)=>{
